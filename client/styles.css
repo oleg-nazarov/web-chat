@@ -41,16 +41,44 @@ body {
 #chat {
     display: none;
     flex-direction: column;
+    align-items: center;
     height: 100%;
+}
+
+#top-container {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
 }
 
 #message-container {
     flex-grow: 1;
     overflow-y: auto;
+    width: 80%;
     padding: 10px;
     background-color: #fff;
     border-top: 1px solid #ddd;
     border-bottom: 1px solid #ddd;
+}
+
+.message {
+    display: flex;
+    background-color: white;
+    padding: 8px 15px;
+    margin-bottom: 10px;
+}
+
+.message_your {
+    justify-content: right;
+}
+
+.message-inner {
+    width: 80%;
+}
+
+.message-inner_your {
+    text-align: right;
 }
 
 #input-container {
@@ -82,10 +110,4 @@ body {
 
 #send-button:hover {
     background-color: #0056b3;
-}
-
-.message {
-    background-color: white;
-    padding: 8px 15px;
-    margin-bottom: 10px;
 }

@@ -10,11 +10,16 @@
 
 <body>
     <div id="login">
-        <input autofocus id="username-input" type="text" placeholder="Enter your name">
+        <input autofocus id="username-input" type="text" maxlength="42" placeholder="Enter your name">
         <button id="login-button">Enter</button>
     </div>
 
     <div id="chat">
+        <div id="top-container">
+            <span id="your-name"></span>,
+            total online:
+            <span id="total-users"></span>
+        </div>
         <div id="message-container"></div>
         <div id="input-container">
             <input id="message-input" type="text" placeholder="Enter your message">

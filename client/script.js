@@ -1,23 +1,49 @@
 function startWs(name) {
-    function addChildMessage(container, text) {
-        const message = document.createElement("div");
-        message.classList.add("message");
-        message.textContent = text;
-
+    function addMessage({ container, text, tag = 'span', isYour = false }) {
+        const message = getMessageChild({ text, tag, isYour });
         container.appendChild(message);
+
         container.scrollTop = container.scrollHeight;
     }
+
+    function getMessageChild({ text, tag, isYour }) {
+        const block = document.createElement(tag);
+        block.textContent = text;
+        block.classList.add("message-inner");
+
+        const message = document.createElement("div");
+
+        if (isYour) {
+            message.classList.add("message_your");
+            block.classList.add("message-inner_your");
+        }
+
+        message.appendChild(block);
+        message.classList.add("message");
+
+        return message;
+    }
+
+    const nameContainer = document.getElementById("your-name");
+    const totalUsers = document.getElementById("total-users");
 
     const container = document.getElementById("message-container");
     const input = document.getElementById("message-input");
     const sendButton = document.getElementById("send-button");
 
     const sendMessage = () => {
-        addChildMessage(container, `You: ${input.value}`);
+        addMessage({
+            container,
+            text: input.value,
+            isYour: true,
+        });
+
         ws.send(JSON.stringify({ type: "message", text: input.value }));
 
         input.value = "";
     };
+
+    nameContainer.textContent = name;
 
     const ws = new WebSocket("wss://easy-web-chat-601001dda003.herokuapp.com");
 
@@ -27,11 +53,31 @@ function startWs(name) {
 
 
     ws.addEventListener("message", (event) => {
-        addChildMessage(container, event.data);
+        const data = JSON.parse(event.data);
+
+        if (data.type === "message") {
+            addMessage({
+                container,
+                text: data.text,
+            });
+        } else if (data.type === "system") {
+            addMessage({
+                container,
+                text: data.text,
+                tag: "em",
+            });
+        } else if (data.type === "totalUsers") {
+            totalUsers.textContent = data.text;
+        }
+
     });
 
     ws.addEventListener("close", () => {
-        addChildMessage(container, "Chat is disconnected");
+        addMessage({
+            container,
+            text: "Chat is disconnected",
+            tag: "em",
+        });
     });
 
     sendButton.addEventListener("click", () => {

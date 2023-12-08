@@ -2,7 +2,12 @@ const WebSocket = require("ws");
 
 const wss = new WebSocket.Server({ port: process.env.PORT });
 
+
+let totalUsers = 0;
+
 wss.on("connection", (socket) => {
+    totalUsers += 1;
+
     socket.on("message", (data) => {
         const message = JSON.parse(data);
 
@@ -13,8 +18,10 @@ wss.on("connection", (socket) => {
 
                 wss.clients.forEach((client) => {
                     if (client !== socket) {
-                        client.send(`${message.text} connected`);
+                        client.send(JSON.stringify({ type: "system", text: `${message.text} connected` }));
                     }
+
+                    client.send(JSON.stringify({ type: "totalUsers", text: totalUsers }));
                 });
 
                 break;
@@ -24,7 +31,7 @@ wss.on("connection", (socket) => {
                 wss.clients.forEach((client) => {
                     if (client !== socket) {
                         const name = socket.username ?? "Unknown";
-                        client.send(`${name}: ${message.text}`);
+                        client.send(JSON.stringify({ type: "message", text: `${name}: ${message.text}` }));
                     }
                 });
 
@@ -37,13 +44,16 @@ wss.on("connection", (socket) => {
     });
 
     socket.on("close", () => {
+        totalUsers -= 1;
+
         const name = socket.username ?? "Unknown";
         console.log(`${name} disconnected`);
 
         wss.clients.forEach((client) => {
             if (client !== socket) {
                 const name = socket.username ?? "Unknown";
-                client.send(`${name} disconnected`);
+                client.send(JSON.stringify({ type: "system", text: `${name} disconnected` }));
+                client.send(JSON.stringify({ type: "totalUsers", text: totalUsers }));
             }
         });
     })
