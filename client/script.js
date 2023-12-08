@@ -3,11 +3,11 @@ function startWs(name) {
         const message = document.createElement("div");
         message.classList.add("message");
         message.textContent = text;
-    
+
         container.appendChild(message);
         container.scrollTop = container.scrollHeight;
     }
-    
+
     const container = document.getElementById("message-container");
     const input = document.getElementById("message-input");
     const sendButton = document.getElementById("send-button");
@@ -20,7 +20,7 @@ function startWs(name) {
     };
 
     const ws = new WebSocket("wss://easy-web-chat-601001dda003.herokuapp.com");
-    
+
     ws.addEventListener("open", () => {
         ws.send(JSON.stringify({ type: "username", text: name }));
     });
