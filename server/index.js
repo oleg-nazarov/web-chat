@@ -51,7 +51,6 @@ wss.on("connection", (socket) => {
 
         wss.clients.forEach((client) => {
             if (client !== socket) {
-                const name = socket.username ?? "Unknown";
                 client.send(JSON.stringify({ type: "system", text: `${name} disconnected` }));
                 client.send(JSON.stringify({ type: "totalUsers", text: totalUsers }));
             }
@@ -59,4 +58,4 @@ wss.on("connection", (socket) => {
     })
 });
 
-console.log("Server is running on ws://localhost:8080");
+console.log("Server is running");
