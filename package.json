@@ -1,14 +1,20 @@
 {
   "name": "web_chat",
   "version": "1.0.0",
-  "description": "",
-  "main": "server/index.js",
+  "description": "A simple Web Chat",
+  "main": "server.js",
   "scripts": {
-    "start": "node server/index.js"
+    "start": "node server.js"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "ws": "^8.14.2"
-  }
+  },
+  "engines": {
+    "node": "14.x"
+  },
+  "license": "MIT",
+  "keywords": [
+    "node",
+    "glitch"
+  ]
 }

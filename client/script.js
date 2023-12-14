@@ -45,7 +45,7 @@ function startWs(name) {
 
     nameContainer.textContent = name;
 
-    const ws = new WebSocket("wss://easy-web-chat-601001dda003.herokuapp.com");
+    const ws = new WebSocket("wss://oleg-nazarov-web-chat.glitch.me");
 
     ws.addEventListener("open", () => {
         ws.send(JSON.stringify({ type: "username", text: name }));
@@ -77,6 +77,12 @@ function startWs(name) {
             container,
             text: "Chat is disconnected",
             tag: "em",
+        });
+        // for Glitch
+        addMessage({
+            container,
+            text: "Note: when inactive, it might take up to 1 minute from the server to start up again",
+            tag: "strong",
         });
     });
 

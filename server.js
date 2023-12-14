@@ -2,7 +2,6 @@ const WebSocket = require("ws");
 
 const wss = new WebSocket.Server({ port: process.env.PORT });
 
-
 let totalUsers = 0;
 
 wss.on("connection", (socket) => {
